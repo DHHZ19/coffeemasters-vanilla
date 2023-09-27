@@ -18,12 +18,37 @@ export class MenuPage extends HTMLElement {
 
     // method is for when component is attached to the DOM
     connectedCallback(){
-        const template =  document.getElementById("menu-page-template");
+        const template = document.getElementById("menu-page-template");
         const content = template.content.cloneNode(true);
-
         this.root.appendChild(content);
+
+        window.addEventListener("appmenuchange", () => {
+            this.render();
+        })
     }
 
+    render() {
+        if(app.store.menu) {
+            this.root.querySelector("#menu").innerHTML = ""
+            for (let category of app.store.menu) {
+                const liCategroy = document.createElement("li")
+                liCategroy.innerHTML = `
+                <h3>${category.name} </h3>
+                <ul class="category">
+                </ul>
+                 `
+                this.root.querySelector("#menu").appendChild(liCategroy);
+
+                category.products.forEach(product => {
+                    const item  = document.createElement("product-item");
+                    item.dataset.product = JSON.stringify(product);
+                    liCategroy.querySelector("ul").appendChild(item);
+                })
+            }
+        } else {
+            this.root.querySelector("#menu").innerHTML = "Loadding...."
+        }
+    }
 }
 
 customElements.define("menu-page", MenuPage);
