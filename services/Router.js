@@ -41,7 +41,7 @@ const Router = {
                 }
 
                 const paramID = route.substring(route.lastIndexOf("-")+1);
-                pageElement.dataset.id = paramID;
+                pageElement.dataset.productId = paramID;
 
                 if(pageElement){
                     const cache = document.querySelector("main");
